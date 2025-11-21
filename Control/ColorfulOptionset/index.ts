@@ -49,16 +49,16 @@ export class ColorfulOptionset implements ComponentFramework.ReactControl<IInput
 	private config : IConfig | undefined;
 
 	
-	constructor()
-	{
-
+	constructor(){
+		// Empty constructor
 	}
+	
 
 
 	private parseIconConfig(defaultIcon : string,  iconConfig ?: string, sortBy ?: "TEXT"|"VALUE"): IConfig{
-		const isJSON = iconConfig && iconConfig.includes("{");
+		const isJSON = iconConfig?.includes("{");
 		this.config = { 
-			jsonConfig : isJSON === true ? JSON.parse(iconConfig as string) as ISetupSchema : undefined,
+			jsonConfig : isJSON === true ? JSON.parse(iconConfig!) as ISetupSchema : undefined,
 			defaultIconName : (!isJSON ? iconConfig : defaultIcon) ?? defaultIcon, 
 			sortBy: sortBy ?? "VALUE"	
 		}
@@ -94,7 +94,7 @@ export class ColorfulOptionset implements ComponentFramework.ReactControl<IInput
 	
 		this.isDisabled = context.mode.isControlDisabled;
 		this.currentValue = context.parameters.optionsInput.raw;	
-		let params = {
+		const params = {
 			rawOptions: context.parameters.optionsInput.attributes!.Options,
 			selectedKey: this.currentValue, 			
 			onChange: this.onChange, 
@@ -123,7 +123,7 @@ export class ColorfulOptionset implements ComponentFramework.ReactControl<IInput
 	public getOutputs(): IOutputs
 	{
 		return {
-			optionsInput: this.currentValue == null ? undefined : this.currentValue
+			optionsInput: this.currentValue ?? undefined
 		};
 	}
 
@@ -132,6 +132,7 @@ export class ColorfulOptionset implements ComponentFramework.ReactControl<IInput
 	 * i.e. cancelling any pending remote calls, removing listeners, etc.
 	 */
 	public destroy(): void
-	{		
-	}	
+	{
+		// Intentionally left empty for cleanup logic if needed in the future
+	}
 }
